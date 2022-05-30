@@ -6,7 +6,7 @@ class Solution {
         // Use 2 pointers to track the longest substrings
         // Use i to scan the string, and update the index of a seen Char
         for(int i = 0, j = 0; i < s.length(); ++i){
-            // Once a Char has been seen, move j to the right of the indice last seen
+            // Once scan a seen Char, move j to the right of the indice last seen
             if (charMap.containsKey(s.charAt(i))){
                 j = Math.max(j, charMap.get(s.charAt(i)) + 1);
             } 
