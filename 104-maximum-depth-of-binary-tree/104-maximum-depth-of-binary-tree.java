@@ -13,33 +13,48 @@
  *     }
  * }
  */
+
+
+// class Solution {
+//     private int currentDepth = 0;
+//     private int maxDepth = 0;
+    
+//     public int maxDepth(TreeNode root) {
+//         traverse(root);
+//         return maxDepth;
+//     }
+    
+//     public void traverse(TreeNode root) {
+//         if(root == null) return;
+        
+//         // prior to traversing the node
+//         currentDepth++;
+        
+//         // reach leaf node, update the max depth
+//         if (root.left == null && root.left == null) {
+//             maxDepth = Math.max(maxDepth, currentDepth);
+//         }
+        
+//         traverse(root.left);
+//         traverse(root.right);
+        
+//         // leaving the node
+//         currentDepth--;            
+//     }
+    
+// }
+
 class Solution {
-    private int currentDepth = 0;
-    private int maxDepth = 0;
     
     public int maxDepth(TreeNode root) {
-        traverse(root);
-        return maxDepth;
+        if(root == null) return 0;
+        
+        int depth = 0;
+        
+        int leftHeight = maxDepth(root.left);
+        int rightHeight = maxDepth(root.right);
+        
+        depth = Math.max(leftHeight, rightHeight) + 1;
+        return depth;
     }
-    
-    public void traverse(TreeNode root) {
-        if(root == null) return;
-        
-        // prior to traversing the node
-        currentDepth++;
-        
-        // reach leaf node, update the max depth
-        if (root.left == null && root.left == null) {
-            maxDepth = Math.max(maxDepth, currentDepth);
-        }
-        
-        traverse(root.left);
-        traverse(root.right);
-        
-        // leaving the node
-        currentDepth--;
-            
-            
-    }
-    
 }
