@@ -25,8 +25,10 @@ class Solution {
     public void traverse(TreeNode root) {
         if(root == null) return;
         
+        // prior to traversing the node
         currentDepth++;
-            
+        
+        // reach leaf node, update the max depth
         if (root.left == null && root.left == null) {
             maxDepth = Math.max(maxDepth, currentDepth);
         }
@@ -34,6 +36,7 @@ class Solution {
         traverse(root.left);
         traverse(root.right);
         
+        // leaving the node
         currentDepth--;
             
             
