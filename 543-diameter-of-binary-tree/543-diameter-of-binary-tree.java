@@ -25,13 +25,11 @@ class Solution {
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
         
-        int depth = 0;
         int leftDepth = maxDepth(root.left);
         int rightDepth = maxDepth(root.right);
         maxDiameter = Math.max(maxDiameter, leftDepth + rightDepth);
         
-        depth = Math.max(leftDepth, rightDepth) + 1;
         
-        return depth;
+        return Math.max(leftDepth, rightDepth) + 1;
     }
 }
