@@ -15,6 +15,7 @@ class Solution {
         
         while(p1 != null && p2 != null) {
             
+            // connect the node with small value to result list
             if(p1.val < p2.val) {
                 p.next = p1;
                 p1 = p1.next;
@@ -25,6 +26,7 @@ class Solution {
             p = p.next;
         }
         
+        // connect the left non-empty list to the result list
         p.next = (p1 != null) ? p1 : p2;
         
         return dummyHead.next;
