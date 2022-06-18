@@ -12,14 +12,8 @@ class Solution:
         while p1 != p2:
             # if either pointer reaches the end of a list, switch it to the head of the other list
             # connect 2 lists togeter, then the 2 pointers will meet at the intersection node
-            if p1 is None:
-                p1 = headB
-            else:
-                p1 = p1.next
-                
-            if p2 is None:
-                p2 = headA
-            else:
-                p2 = p2.next
-                
+            
+            p1 = headB if p1 is None else p1.next               
+            p2 = headA if p2 is None else p2.next    
+        
         return p1
