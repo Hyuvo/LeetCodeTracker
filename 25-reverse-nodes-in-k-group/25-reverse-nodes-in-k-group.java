@@ -40,13 +40,5 @@ class Solution {
         return newHead;
     }
 }
-//     public ListNode reverseBetween(ListNode head, int left, int right) {
-//         if(left == 1) {
-//             return reverseFirstK(head, right);
-//         }
-        
-//         head.next = reverseBetween(head.next, left-1, right-1);
-//         head.next.next = head;
-//         return head;
-//     }
+
     
