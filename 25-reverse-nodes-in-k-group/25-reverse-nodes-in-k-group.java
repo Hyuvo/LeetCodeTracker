@@ -13,7 +13,8 @@ class Solution {
         if(head == null || head.next == null) return head;
         //first reverse first k nodes, then regard the left list as a new list to reverse next k nodes
         
-        ListNode probe = head; // test if left nodes count < k(probe step out of boundary)
+        // test if left nodes count < k(probe step out of boundary)
+        ListNode probe = head;
         for(int i = 0; i < k; ++i) {
             if(probe == null) return head;
             probe = probe.next;
@@ -28,8 +29,7 @@ class Solution {
 
     private static ListNode successor = null;
     public ListNode reverseFirstK(ListNode head, int k) {
-        if (k == 1) {
-            
+        if (k == 1) {            
             successor = head.next;
             return head;
         }
