@@ -29,6 +29,7 @@ class Solution {
     private static ListNode successor = null;
     public ListNode reverseFirstK(ListNode head, int k) {
         if (k == 1) {
+            //update successor to be connected
             successor = head.next;
             return head;
         }
