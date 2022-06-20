@@ -12,6 +12,7 @@ class Solution {
             }
             ++fast;
         }
+        // array len = index +1
         return slow+1;
     }
 }
