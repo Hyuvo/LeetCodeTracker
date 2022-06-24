@@ -1,44 +1,49 @@
 class Solution {
     public int[] getModifiedArray(int length, int[][] updates) {
-        if(length == 0) return null;
-        int[] arr = new int[length];
-        
-        Difference df = new Difference(arr);
-        for (int[] update: updates) {
-            int i = update[0];
-            int j = update[1];
-            int val = update[2];
-            df.increment(i, j, val);
+        int[] nums = new int[length];
+        Difference diff = new Difference(nums);
+        for(int[] update : updates) {
+            int start = update[0];
+            int end = update[1];
+            int value = update[2];
+            diff.increment(start, end, value);
         }
-        return df.result();
+        return diff.result();
     }
     
-    class Difference {
+    class Difference{
         private int[] diff;
         
         public Difference(int[] nums) {
             assert nums.length > 0;
-            diff = new int[nums.length];
+            this.diff = new int[nums.length];
             diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
+            for (int i = 1; i < diff.length; ++i) {
+                //diff[i] is the difference btwn adjacent elements;
                 diff[i] = nums[i] - nums[i-1];
             }
         }
         
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
+        public void increment(int start, int end, int value) {
+            // add value to num btwn [start, end]
+            // add value to [start, diff.length - 1]
+            diff[start] += value;
+            // if end >= the last element of diff, then add value to all
+            // ele >= start
+            if(end < diff.length - 1) {
+                diff[end + 1] -= value;
             }
         }
         
         public int[] result() {
-            int[] res = new int[diff.length];
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; ++i) {
-                res[i] = res[i-1] + diff[i];
+            int[] result = new int[diff.length];
+            result[0] = diff[0];
+            //Based on diff[], recreate the result
+            for(int i = 1; i < diff.length; ++i) {
+                result[i] = result[i-1] + diff[i];
             }
-            return res;
+            return result;
+            
         }
     }
 }
