@@ -3,11 +3,9 @@ class Solution {
         //as eating time monotonely decreases as eating speed increases
         //need to get the min speed under constraint of h hours
         //so search the left bound of eating speed(to get longer eating time)
+        // using long to prevent from exceeding
         long left = 1;
         long right = 1000000000;
-        // for(int pile : piles) {
-        //     if(pile > right) right = pile;
-        // }
         
         while (left <= right) {
             long mid = left + (right - left) / 2;
