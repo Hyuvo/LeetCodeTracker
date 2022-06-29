@@ -11,11 +11,9 @@ class Solution {
         
         while (left <= right) {
             long mid = left + (right - left) / 2;
-            if (eatingTime(piles, mid) == h) {
+            if (eatingTime(piles, mid) <= h) {
                 right = mid - 1;
-            } else if (eatingTime(piles, mid) < h) {
-                right = mid - 1;
-            } else if (eatingTime(piles, mid) > h) {
+            } else {
                 left = mid + 1;
             }
         }        
