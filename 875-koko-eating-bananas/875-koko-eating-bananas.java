@@ -1,5 +1,3 @@
-import java.util.Arrays;
-import java.util.Collections;
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
         //as eating time monotonely decreases as eating speed increases
@@ -11,12 +9,12 @@ class Solution {
         //     if(pile > right) right = pile;
         // }
         
-        while (left < right) {
+        while (left <= right) {
             long mid = left + (right - left) / 2;
             if (eatingTime(piles, mid) == h) {
-                right = mid;
+                right = mid - 1;
             } else if (eatingTime(piles, mid) < h) {
-                right = mid;
+                right = mid - 1;
             } else if (eatingTime(piles, mid) > h) {
                 left = mid + 1;
             }
