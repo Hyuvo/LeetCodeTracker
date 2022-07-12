@@ -9,6 +9,8 @@ class Solution {
         }
         while (left <= right) { //search m within [left, right]
             int mid = left + (right - left) / 2;
+            // minimizing max subsum means increasing partitions under constraint groups <= m
+            // the more subgroups, the less max subsum
             if (countGroup(nums, mid) == m) {
                 // search left bound
                 right = mid - 1;
