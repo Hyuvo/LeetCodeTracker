@@ -35,6 +35,7 @@ class Solution {
         
         // recursion
         TreeNode root = new TreeNode(rootVal);
+        // start + left size - 1 is the last node of the left subtree
         root.left = build(inorder, inStart, rootIndex - 1,
                          postorder, postStart, postStart+leftSize-1);
         root.right = build(inorder, rootIndex + 1, inEnd,
