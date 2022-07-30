@@ -35,6 +35,7 @@ class Solution {
         // only search j on the right half
         int end = mid + 1;// exclusive
         for (int i = lower; i < mid + 1; ++i) {
+            // use long, in case 2xnums[end] exceeds
             while(end <= upper && (long) nums[i] > (long) nums[end] * 2) {
                 end++;
             }
