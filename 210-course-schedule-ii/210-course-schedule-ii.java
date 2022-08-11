@@ -26,7 +26,8 @@ class Solution {
         int count = 0;
         while(!q.isEmpty()) {
             int current = q.poll();
-            // the inorder is the topological sorting result          
+            // the inorder is the topological sorting result     
+            // counting the # of courses whose indegree can be 0
             result[count++] = current;
             // deduct 1 from its neighbors' indegrees
             for (int neighbor : graph[current]) {
