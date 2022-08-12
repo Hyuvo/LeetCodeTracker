@@ -46,7 +46,7 @@ class Solution {
         // find root and compress path
         public int find(int x) {
             if (parent[x] != x) {
-                // recurse until the root
+                // recurse until find the root, and set all nodes on the path parent to the root
                 parent[x] = find(parent[x]);
             }
             return parent[x];
