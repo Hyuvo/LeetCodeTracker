@@ -14,6 +14,8 @@ class Solution {
     }
     
     public int minimumEffortPath(int[][] heights) {
+        // Dijsktra
+        
         // Note: effort is the maximum absolute difference in heights between two consecutive cells of the route. index start from 0
         // Return the minimum effort required to travel from the top-left cell to the bottom-right cell.
         int m = heights.length, n = heights[0].length;
