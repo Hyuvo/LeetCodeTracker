@@ -1,42 +1,42 @@
 class Solution {
-    private int[][] directions = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     
     class State {
         int x, y;
-        // effort from start
         int effort;
         
         public State(int x, int y, int effort) {
             this.x = x;
             this.y = y;
             this.effort = effort;
-        }        
+        }
     }
     
     public int minimumEffortPath(int[][] heights) {
         // Dijsktra
+        // Note: effort is the maximum absolute difference in heights between two consecutive cells of the route.
+        // Return the minimum effort
+        // 0-indexed
         
-        // Note: effort is the maximum absolute difference in heights between two consecutive cells of the route. index start from 0
-        // Return the minimum effort required to travel from the top-left cell to the bottom-right cell.
+        // the effort from (0, 0) to (i, j) is effortTo[i][j]
         int m = heights.length, n = heights[0].length;
+        int[][] effortTo = new int[m][n];
         
-        // the effort from (0, 0) to (i, j) is effort[i][j]
-        int[][] effortTo = new int[m][n];  
-        for (int i = 0; i < m; ++i) {
+        // init with infinity
+        for (int i = 0; i < m; i++) {
             Arrays.fill(effortTo[i], Integer.MAX_VALUE);
         }
         effortTo[0][0] = 0;
         
+        // min queue
         Queue<State> pq = new PriorityQueue<>((a, b) -> {
             return a.effort - b.effort;
         });
-        
         pq.add(new State(0, 0, 0));
         
+        //BFS
         while(!pq.isEmpty()) {
             State current = pq.remove();
-            int curX = current.x;
-            int curY = current.y;
+            int curX = current.x, curY = current.y;
             int curEffort = current.effort;
             
             // if reach the target
@@ -44,17 +44,19 @@ class Solution {
                 return curEffort;
             }
             
-            // if no better than current least effort
+            // if no better than previous effort
             if (curEffort > effortTo[curX][curY]) {
                 continue;
             }
             
-            List<int[]> neighbors = buildAdj(heights, curX, curY);
+            // broadcast to neighbors
+            List<int[]> neighbors = getNeighbors(heights, curX, curY);
             for (int[] neighbor : neighbors) {
                 int nextX = neighbor[0], nextY = neighbor[1];
-                // effort from start to the next
-                int effortToNext = Math.max(curEffort, Math.abs(heights[nextX][nextY] - heights[curX][curY]));
-                // Return the minimum effort 
+                // effort to next is either the current effort, or the |difference(cur, next)|
+                int effortToNext = Math.max(curEffort, Math.abs(heights[curX][curY] - heights[nextX][nextY]));
+                
+                // update the queue (shorter route)
                 if (effortTo[nextX][nextY] > effortToNext) {
                     effortTo[nextX][nextY] = effortToNext;
                     pq.add(new State(nextX, nextY, effortToNext));
@@ -62,23 +64,22 @@ class Solution {
             }
         }
         
-        return -1;
+        return -1;                
         
     }
     
-    public List<int[]> buildAdj(int[][] matrix, int x, int y) {
-        int m = matrix.length, n = matrix[0].length;
+    int[][] directions = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};       public List<int[]> getNeighbors(int[][] matrix, int x, int y) {
         List<int[]> neighbors = new ArrayList<>();
-        for (int[] direction : directions) {
-            int newX = x + direction[0];
-            int newY = y + direction[1];
-            // stay in boundary
-            if (newX >= m || newY >= n || newX < 0 || newY < 0)
+        int m = matrix.length, n = matrix[0].length;
+        for (int i = 0; i < 4; ++i) {
+            int nx = x + directions[i][0];
+            int ny = y + directions[i][1];
+            if (nx >= m || nx < 0 || ny >= n || ny < 0) {
                 continue;
-            neighbors.add(new int[]{newX, newY});
+            }
+            neighbors.add(new int[]{nx, ny});
         }
         
         return neighbors;
-        
     }
 }
