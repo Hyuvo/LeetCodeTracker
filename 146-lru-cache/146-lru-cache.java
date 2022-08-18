@@ -1,45 +1,78 @@
-class LRUCache {
+class LRUCache extends LinkedHashMap<Integer, Integer>{
     private int capacity;
-    private LinkedHashMap<Integer, Integer> cache;
 
     public LRUCache(int capacity) {
-        cache = new LinkedHashMap<>();
+        // LinkedHashMap(int capacity, float fillRatio, boolean Order): This constructor is also used to initialize both the capacity and fill ratio for a LinkedHashMap along with whether to follow the insertion order or not.
+        // Here, For the Order attribute, true is passed for the last access order and false is passed for the insertion order.
+        super(capacity, 0.75F, true);
         this.capacity = capacity;
     }
     
     public int get(int key) {
-        if (!cache.containsKey(key)) {
-            return -1;
-        }
-        
-        makeRecent(key);
-        return cache.get(key);
+        return super.getOrDefault(key, -1);
     }
+    
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+        return size() > capacity;
+    }
+    //This method is generally invoked after the addition of the elements into the map by the use of put() and putall() method.
+    //This method allows the map to modify itself as directed by its return value.
     
     public void put(int key, int value) {
-        if (cache.containsKey(key)) {
-            cache.put(key, value);
-            makeRecent(key);
-            return;
-        } else {
-            if (cache.size() >= capacity) {
-                int eldestKey = cache.keySet().iterator().next(); 
-                cache.remove(eldestKey);
-            }
-            cache.put(key, value);
-            makeRecent(key);
-        }
-        
-    }
-    
-    public void makeRecent(int key) {
-        int val = cache.get(key);
-        cache.remove(key);
-        // add to the end of the list
-        cache.put(key, val);
-       
+        super.put(key, value);
     }
 }
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
+
+// class LRUCache {
+//     private int capacity;
+//     private LinkedHashMap<Integer, Integer> cache;
+
+//     public LRUCache(int capacity) {
+//         cache = new LinkedHashMap<>();
+//         this.capacity = capacity;
+//     }
+    
+//     public int get(int key) {
+//         if (!cache.containsKey(key)) {
+//             return -1;
+//         }
+        
+//         makeRecent(key);
+//         return cache.get(key);
+//     }
+    
+//     public void put(int key, int value) {
+//         if (cache.containsKey(key)) {
+//             cache.put(key, value);
+//             makeRecent(key);
+//             return;
+//         } else {
+//             if (cache.size() >= capacity) {
+//                 int eldestKey = cache.keySet().iterator().next(); 
+//                 cache.remove(eldestKey);
+//             }
+//             cache.put(key, value);
+//             makeRecent(key);
+//         }
+        
+//     }
+    
+//     public void makeRecent(int key) {
+//         int val = cache.get(key);
+//         cache.remove(key);
+//         // add to the end of the list
+//         cache.put(key, val);
+       
+//     }
+// }
 
 /**
  * Your LRUCache object will be instantiated and called as such:
