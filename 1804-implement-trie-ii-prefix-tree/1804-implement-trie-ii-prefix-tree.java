@@ -1,10 +1,7 @@
 class Trie {
     // use trie map, word is the key, count is the value
     private TrieMap<Integer> map = new TrieMap<>();
-    public Trie() {
-       
-    }
-    
+
     public void insert(String word) {
         if (!map.containsKey(word)) {
             map.put(word, 1);
