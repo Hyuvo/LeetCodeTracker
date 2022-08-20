@@ -6,8 +6,6 @@ class Solution {
             dict.add(root);
         }
         
-        // StringBuilder result = new StringBuilder();
-        String result = "";
         String[] words = sentence.split(" ");
         for (int i = 0; i < words.length; ++i) {
             String prefix = dict.shortestPrefixOf(words[i]);
@@ -16,10 +14,9 @@ class Solution {
                 words[i] = prefix;
             }
             
-        }
-        
-        result = String.join(" ", words);
-        return result;
+        }        
+
+        return String.join(" ", words);
     }
 }
 
