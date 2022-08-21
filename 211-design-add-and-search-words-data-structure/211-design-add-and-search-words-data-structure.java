@@ -1,7 +1,8 @@
 class WordDictionary {
-    private final TrieMap<Object> map = new TrieMap<>();
+    private final TrieMap<Object> map;
+    
     public WordDictionary() {
-        
+        map  = new TrieMap<>();
     }
     
     public void addWord(String word) {
@@ -10,7 +11,7 @@ class WordDictionary {
     }
     
     public boolean search(String word) {
-        // has .
+        // has '.'
         return map.hasKeyWithPattern(word);
     }
 }
