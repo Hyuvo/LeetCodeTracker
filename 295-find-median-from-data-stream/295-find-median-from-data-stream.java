@@ -32,6 +32,7 @@ class MedianFinder {
         if (low.size() == high.size()) {
             return (double) (low.peek() + high.peek()) / 2;
         } else {
+            // as high.size >= low.size()
             return high.peek();
         }
     }
