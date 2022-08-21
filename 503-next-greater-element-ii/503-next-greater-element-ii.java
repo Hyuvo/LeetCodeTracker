@@ -4,7 +4,7 @@ class Solution {
         int n = nums.length;
         int[] greater = new int[n];
         Stack<Integer> s = new Stack<Integer>();
-        // 2 round
+        // 2 rounds
         for (int i = 2 * n - 1; i >= 0; --i) {
             while(!s.isEmpty() && s.peek() <= nums[i % n]) {
                 s.pop();
