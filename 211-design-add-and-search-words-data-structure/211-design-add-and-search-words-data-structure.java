@@ -72,9 +72,10 @@ class TrieMap<V> {
         for (int j = 0; j < R; ++j) {
             // see every possible char, return if any has val
             if (hasKeyWithPattern(node.children[j], pattern, i + 1)) {
+                // as long as one child has this patten
                 return true;
             }
-            // return hasKeyWithPattern(node.children[j], pattern, i + 1);        
+            // NOTE: NOT return hasKeyWithPattern(node.children[j], pattern, i + 1);        
         }
         // nothing matched
         return false;
