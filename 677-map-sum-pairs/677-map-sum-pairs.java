@@ -69,7 +69,7 @@ class TrieMap {
         }
         // traversal
         for (char c = 'a'; c < 'a' + R; ++c) {
-            
+            // cannot append(c + 'a')
             path.append(c);
             // enter
             traverse(node.children[c - 'a'], path, result);
