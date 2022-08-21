@@ -1,6 +1,6 @@
 class MedianFinder {    
-    private Queue<Integer> low;
-    private Queue<Integer> high;
+    private PriorityQueue<Integer> low;
+    private PriorityQueue<Integer> high;
 
     public MedianFinder() {
         // put the less-value half of the nums in low, which should be a max heap
