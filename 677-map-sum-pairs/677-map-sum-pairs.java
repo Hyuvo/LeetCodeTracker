@@ -22,8 +22,7 @@ class MapSum {
 }
 
 class TrieMap {
-    private static final int R = 256;
-    private int size = 0;
+    private static final int R = 26;
     private class TrieNode {
         Integer val = null;
         TrieNode[] children = new TrieNode[R];
@@ -45,7 +44,7 @@ class TrieMap {
             return node;
         }
         char c = key.charAt(i);
-        node.children[c] = put(node.children[c], key, val, i + 1);
+        node.children[c - 'a'] = put(node.children[c - 'a'], key, val, i + 1);
         return node;
     }
     
@@ -69,10 +68,11 @@ class TrieMap {
             result.add(path.toString());
         }
         // traversal
-        for (char c = 0; c < R; ++c) {
+        for (char c = 'a'; c < 'a' + R; ++c) {
+            
             path.append(c);
             // enter
-            traverse(node.children[c], path, result);
+            traverse(node.children[c - 'a'], path, result);
             // exit
             path.deleteCharAt(path.length() - 1);
         }
@@ -88,7 +88,7 @@ class TrieMap {
             }
             
             char c = key.charAt(i);
-            p = p.children[c];
+            p = p.children[c - 'a'];
         }
         return p;
     }
