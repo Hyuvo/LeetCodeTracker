@@ -1,16 +1,33 @@
 class Solution {
     public int fib(int n) {
-        if (n == 0) return 0;
-        // bottom up
-        int[] memo = new int[n + 1];
-        memo[0] = 0;
-        memo[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            memo[i] = memo[i - 1] + memo[i - 2];
+        // optimize on space
+        if (n == 0 || n == 1) return n;
+        // dp[i - 1] and dp[i - 2]
+        int dp_i_1 = 1;
+        int dp_i_2 = 0;
+        // no need to store each value;
+        for (int i = 2; i <= n; ++i) {
+            int dp_i = dp_i_1 + dp_i_2;
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
         }
-        return memo[n];
+        return dp_i_1;
     }
 }
+
+// class Solution {
+//     // bottom up
+//     public int fib(int n) {
+//         if (n == 0) return 0;        
+//         int[] memo = new int[n + 1];
+//         memo[0] = 0;
+//         memo[1] = 1;
+//         for (int i = 2; i <= n; i++) {
+//             memo[i] = memo[i - 1] + memo[i - 2];
+//         }
+//         return memo[n];
+//     }
+// }
 
 // class Solution {
 //     // top down
