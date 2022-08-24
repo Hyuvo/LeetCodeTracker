@@ -1,4 +1,5 @@
 class Solution {
+    // O(N^2)
     public int lengthOfLIS(int[] nums) {
         // dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度。
         // 根据这个定义，我们的最终结果（子序列的最大长度）应该是 dp 数组中的最大值。
