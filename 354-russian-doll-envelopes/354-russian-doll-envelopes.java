@@ -1,45 +1,52 @@
 class Solution {
     public int maxEnvelopes(int[][] envelopes) {
+        // Sort based on: weight ascending then height descending
+        // 因为宽度相同根据题设不能套娃，所以高度排序要反过来，这样相同宽度不同高度的信封不能嵌套（一组w对应的h里只能选一个）
         int n = envelopes.length;
-        // 按宽度升序排列，如果宽度一样，则按高度降序排列
-        Arrays.sort(envelopes, new Comparator<int[]>() 
-        {
-            public int compare(int[] a, int[] b) {
-                return a[0] == b[0] ? 
-                    b[1] - a[1] : a[0] - b[0];
+        Arrays.sort(envelopes, new Comparator<int[]>() {
+            public int compare(int[] arr1, int[] arr2) {
+                return arr1[0] == arr2[0] ? 
+                    arr2[1] - arr1[1] : arr1[0] - arr2[0];
             }
         });
-        // 对高度数组寻找 LIS
-        int[] height = new int[n];
-        for (int i = 0; i < n; i++)
-            height[i] = envelopes[i][1];
-
-        return lengthOfLIS(height);
-    }
-
-    /* 返回 nums 中 LIS 的长度 */
-    public int lengthOfLIS(int[] nums) {
-        int piles = 0, n = nums.length;
-        int[] top = new int[n];
-        for (int i = 0; i < n; i++) {
-            // 要处理的扑克牌
-            int poker = nums[i];
-            int left = 0, right = piles;
-            // 二分查找插入位置
-            while (left < right) {
-                int mid = (left + right) / 2;
-                if (top[mid] >= poker)
-                    right = mid;
-                else
-                    left = mid + 1;
-            }
-            if (left == piles) piles++;
-            // 把这张牌放到牌堆顶
-            top[left] = poker;
+        int[] heights = new int[n];
+        for (int i = 0; i < n; ++i) {
+            heights[i] = envelopes[i][1];
         }
-        // 牌堆数就是 LIS 长度
-        return piles;
+        
+        return lengthOfLIS(heights);
     }
+    
+    public int lengthOfLIS(int[] nums) {
+        // patience sorting
+        int pileCount = 0, n = nums.length;
+        // top card on each pile
+        int[] tops = new int[n]; // at most n piles
+        
+        // deal with each card
+        for (int num : nums) {
+            // find a place for each card by binary search
+            // find left bound
+            int left = 0, right = pileCount;
+            // [left, right)
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (tops[mid] >= num) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            
+            if (left == pileCount) {
+                // if no where to put the new card
+                // new a pile
+                ++pileCount;
+            }
+            // put the card on the searched left bound
+            tops[left] = num;
+        }
+        // piles # is LIS
+        return pileCount;
+    }    
 }
-// 详细解析参见：
-// https://labuladong.github.io/article/?qno=354
