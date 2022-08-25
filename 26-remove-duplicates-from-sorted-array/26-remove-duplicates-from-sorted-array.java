@@ -1,18 +1,17 @@
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if(nums.length == 0) return 0;
-        
-        int slow = 0, fast = 0;
-        while(fast < nums.length) {
-            if(nums[slow] != nums[fast]) {
-                // make sure the first k numbers shoud be unique
-                //if fast detects new number
-                //move slow forward and store the new number
-                nums[++slow] = nums[fast];                
+        if (nums.length == 0) return 0;
+        int fast = 0, slow = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != nums[slow]) {
+                // the value can be put after slow
+                // slow++;
+                nums[++slow] = nums[fast];
             }
-            ++fast;
+            fast++;
         }
-        // array len = index +1
+        // the first k elements of nums should hold the final result.
+        // 0-indexed
         return slow + 1;
     }
 }
