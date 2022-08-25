@@ -15,12 +15,13 @@ class Solution {
     }
     
     public String palindrome(String s, int l, int r) {
+        // should not be if inside
         while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
-                // when eligibile for palindrom,
-                // expand
-                --l;
-                ++r;
-                // the new border is not check
+            // when eligibile for palindrom,
+            // expand
+            --l;
+            ++r;
+            // the new border is not check
         }
         // exclusive
         return s.substring(l + 1, r);
