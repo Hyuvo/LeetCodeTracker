@@ -1,7 +1,8 @@
 class Solution {
     public int maxProfit(int k, int[] prices) {
         int n = prices.length;
-        if (n <= 0) return 0;
+        // empty prices
+        if (n == 0) return 0;
         
         if (k > n/2) {
             // at most n/2 transactions take place within n days
