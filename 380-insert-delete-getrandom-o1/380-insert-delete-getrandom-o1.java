@@ -19,22 +19,18 @@ class RandomizedSet {
     
     public boolean remove(int val) {
         if (!valToIndex.containsKey(val)) return false;
-        // int index = valToIndex.get(val);
-        // int last = nums.get(nums.size() - 1);
-        // //update map
-        // valToIndex.remove(val);
-        // valToIndex.put(last, index);
-        // // swap last and val
-        // nums.set(index, last);
-        // // nums.set(nums.size() - 1, val);
-        // // pop last with O(1)
-        // nums.remove(nums.size() - 1);
+       
+        // get index of val
         int index = valToIndex.get(val);
-        valToIndex.put(nums.get(nums.size() - 1), index);     
+        int last = nums.get(nums.size() - 1);
+        // update the last num with index
+        valToIndex.put(last, index);
         valToIndex.remove(val);
-        nums.set(index, nums.get(nums.size() - 1));
+        // swap last with val
+        nums.set(index, nums.set(nums.size() - 1, val));
+
+        // remove last
         nums.remove(nums.size() - 1);
-        
         return true;
     }
     
