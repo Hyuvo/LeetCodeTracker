@@ -22,11 +22,11 @@ class RandomizedSet {
        
         // get index of val
         int index = valToIndex.get(val);
-        int last = nums.get(nums.size() - 1);
         // update the last num with index
-        valToIndex.put(last, index);
+        valToIndex.put(nums.get(nums.size() - 1), index);
         valToIndex.remove(val);
         // swap last with val
+        // This method returns the element previously at the specified position.
         nums.set(index, nums.set(nums.size() - 1, val));
 
         // remove last
