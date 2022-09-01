@@ -1,36 +1,41 @@
 class RandomizedSet {
-    // in order to get random num with equal probability,
-    // the set has to be implemented by an array underneath
     private ArrayList<Integer> nums;
-    // to track the index of each num in the arrray
-    private HashMap<Integer, Integer> valueToIndex;
+    private HashMap<Integer, Integer> valToIndex;
+    //
     private Random random;
-    
+
     public RandomizedSet() {
-        this.nums = new ArrayList<>();
-        this.valueToIndex = new HashMap<>();
-        this.random = new Random();
+        nums = new ArrayList<>();
+        valToIndex = new HashMap<>();
+        random = new Random();
     }
     
     public boolean insert(int val) {
-        if (valueToIndex.containsKey(val)) return false;
-        
+        if (valToIndex.containsKey(val)) return false;
         nums.add(val);
-        valueToIndex.put(val, nums.size() - 1);
+        valToIndex.put(val, nums.size() - 1);
         return true;
     }
     
     public boolean remove(int val) {
-        if (!valueToIndex.containsKey(val)) return false;
-        
-        int index = valueToIndex.get(val);
-        valueToIndex.put(nums.get(nums.size() - 1), index);     
-        valueToIndex.remove(val);
+        if (!valToIndex.containsKey(val)) return false;
+        // int index = valToIndex.get(val);
+        // int last = nums.get(nums.size() - 1);
+        // //update map
+        // valToIndex.remove(val);
+        // valToIndex.put(last, index);
+        // // swap last and val
+        // nums.set(index, last);
+        // // nums.set(nums.size() - 1, val);
+        // // pop last with O(1)
+        // nums.remove(nums.size() - 1);
+        int index = valToIndex.get(val);
+        valToIndex.put(nums.get(nums.size() - 1), index);     
+        valToIndex.remove(val);
         nums.set(index, nums.get(nums.size() - 1));
         nums.remove(nums.size() - 1);
-
-        return true;
         
+        return true;
     }
     
     public int getRandom() {
