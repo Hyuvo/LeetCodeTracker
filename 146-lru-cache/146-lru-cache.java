@@ -1,26 +1,120 @@
-class LRUCache extends LinkedHashMap<Integer, Integer>{
-    private int capacity;
+class Node {
+    public int key, val;
+    public Node prev, next;
+    
+    public Node(int key, int val) {
+        this.key = key;
+        this.val = val;  
+    }
+}
+
+class DoubleList {
+    private Node head, tail;
+    private int size;
+    
+    public DoubleList() {
+        // dummy head and tail
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+        // connect head and tail for empty list
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    // regard the head of list as least recent and the tail as most recent
+    
+    // when adding, put new node to the end of the list
+    public void addLast(Node x) {        
+        x.prev = tail.prev;
+        x.next = tail;
+        tail.prev.next = x;
+        tail.prev = x;
+        ++size;
+    }
+    // need remove a node in O(1)
+    public void remove(Node x) {
+        x.prev.next = x.next;
+        x.next.prev = x.prev;
+        --size;
+    }
+    
+    // when reach cap of chache, remove head of the list and return deleted node
+    public Node removeFirst() {
+        // check if empty list
+        if (head.next == tail) {
+            return null;
+        }
+        Node first = head.next;
+        remove(first);
+        return first;
+    }
+    
+    public int size() {
+        return size;
+    }
+}
+
+class LRUCache {
+    // combine hash and double list to meet get by key and put pair in O(1)
+    private HashMap<Integer, Node> map;
+    private DoubleList cache;
+    private int cap;
 
     public LRUCache(int capacity) {
-        // LinkedHashMap(int capacity, float fillRatio, boolean Order): This constructor is also used to initialize both the capacity and fill ratio for a LinkedHashMap along with whether to follow the insertion order or not.
-        // Here, For the Order attribute, true is passed for the last access order and false is passed for the insertion order.
-        super(capacity, 0.75F, true);
-        this.capacity = capacity;
+        map = new HashMap<>();
+        cache = new DoubleList();
+        cap = capacity;
     }
+    
     
     public int get(int key) {
-        return super.getOrDefault(key, -1);
+        if (!map.containsKey(key)) return -1;
+        makeRecent(key);
+        return map.get(key).val;
     }
-    
-    @Override
-    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
-        return size() > capacity;
-    }
-    //This method is generally invoked after the addition of the elements into the map by the use of put() and putall() method.
-    //This method allows the map to modify itself as directed by its return value.
     
     public void put(int key, int value) {
-        super.put(key, value);
+        // if key already exists, update and make recent
+        if (map.containsKey(key)) {
+            // remove old
+            deleteKey(key);
+            // add new
+            addRecent(key, value);
+            
+        } else {
+            // if does not exist, check if reaches cap, then add
+            if (cap == cache.size()) {
+                removeLeastRecent();
+            }
+            addRecent(key, value);
+        }
+    }
+    // provide higher level operation combining map and cache
+    private void makeRecent(int key) {
+        Node x = map.get(key);
+        // remove and add to the end
+        cache.remove(x);
+        cache.addLast(x);
+    }
+    
+    // add or update
+    private void addRecent(int key, int val) {
+        Node x = new Node(key, val);
+        map.put(key, x);
+        cache.addLast(x);
+    }
+    
+    // delete a key
+    private void deleteKey(int key) {
+        Node deleted = map.get(key);
+        cache.remove(deleted);
+        map.remove(key);
+    }
+    
+    // remove leaset recently used key
+    private void removeLeastRecent() {
+        Node leastRecent = cache.removeFirst();
+        map.remove(leastRecent.key);        
     }
 }
 
@@ -30,169 +124,3 @@ class LRUCache extends LinkedHashMap<Integer, Integer>{
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
-
-// class LRUCache {
-//     private int capacity;
-//     private LinkedHashMap<Integer, Integer> cache;
-
-//     public LRUCache(int capacity) {
-//         cache = new LinkedHashMap<>();
-//         this.capacity = capacity;
-//     }
-    
-//     public int get(int key) {
-//         if (!cache.containsKey(key)) {
-//             return -1;
-//         }
-        
-//         makeRecent(key);
-//         return cache.get(key);
-//     }
-    
-//     public void put(int key, int value) {
-//         if (cache.containsKey(key)) {
-//             cache.put(key, value);
-//             makeRecent(key);
-//             return;
-//         } else {
-//             if (cache.size() >= capacity) {
-//                 int eldestKey = cache.keySet().iterator().next(); 
-//                 cache.remove(eldestKey);
-//             }
-//             cache.put(key, value);
-//             makeRecent(key);
-//         }
-        
-//     }
-    
-//     public void makeRecent(int key) {
-//         int val = cache.get(key);
-//         cache.remove(key);
-//         // add to the end of the list
-//         cache.put(key, val);
-       
-//     }
-// }
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
-
-// class LRUCache {
-//     private int capacity;
-//     private DoubleList cache;
-//     private HashMap<Integer, Node> map;
-    
-//     public void makeRecent(int key) {
-//         Node x = map.get(key);
-//         // swap to the last
-//         cache.remove(x);
-//         cache.addLast(x);
-//     }
-//     public void addRecent(int key, int val) {
-//         Node x = new Node(key, val);
-//         cache.addLast(x);
-//         map.put(key, x);
-//     }
-    
-//     public void deleteKey(int key) {
-//         Node x = map.get(key);
-//         cache.remove(x);
-//         map.remove(key);
-//     }
-    
-//     public void removeLeastRecent() {
-//         Node first = cache.removeFirst();
-//         map.remove(first.key);
-//     }
-    
-//     public LRUCache(int capacity) {
-//         this.capacity = capacity;
-//         cache = new DoubleList();
-//         map = new HashMap<>();
-//     }
-    
-//     public int get(int key) {
-//         if (!map.containsKey(key)) {
-//             return -1;
-//         }
-//         makeRecent(key);
-//         return map.get(key).val;
-//     }
-    
-//     public void put(int key, int value) {
-//         if (map.containsKey(key)) {
-//             deleteKey(key);
-//             addRecent(key, value);
-//             return;
-//         } 
-//         // if not contains key
-//         if (cache.getSize() == capacity) {
-//             removeLeastRecent();
-//         }
-//         addRecent(key, value);
-//         return;
-//     }
-    
-    
-//     class Node {
-//         private int key, val;
-//         private Node prev, next;
-        
-//         public Node(int key, int val) {
-//             this.key = key;
-//             this.val = val;
-            
-//         }        
-//     }
-    
-//     class DoubleList {
-//         private Node head, tail;
-//         private int size;
-        
-//         public DoubleList() {
-//             this.size = 0;
-//             this.head = new Node(0, 0);
-//             this.tail = new Node(0, 0);
-//             head.next = tail;
-//             tail.prev = head;
-//         }
-        
-//         // most recent node at the end of the list
-//         public void addLast(Node x) {
-//             x.prev = tail.prev;
-//             x.next = tail;
-//             tail.prev.next = x;
-//             tail.prev = x;
-//             size++;
-//         }
-        
-        
-//         public void remove(Node x) {
-//             x.prev.next = x.next;
-//             x.next.prev = x.prev;
-//             size--;
-//         }
-        
-        
-//         public Node removeFirst() {
-//             if (size == 0) {
-//                 return null;
-//             }
-//             Node first = head.next;
-//             remove(first);
-            
-//             return first;
-            
-//         }
-        
-//         public int getSize() {
-//             return size;
-//         }
-//     }
-
-
-// }
