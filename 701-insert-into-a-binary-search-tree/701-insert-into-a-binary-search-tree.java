@@ -15,18 +15,18 @@
  */
 class Solution {
     public TreeNode insertIntoBST(TreeNode root, int val) {
-        // base case (got it)
+        // reache the end, put val
         if (root == null) return new TreeNode(val);
         
-        if (root.val > val) {
-            root.left = insertIntoBST(root.left, val);
-        }
-        
+        // greater than current node, should be in the right sub
         if (root.val < val) {
             root.right = insertIntoBST(root.right, val);
         }
+        // should be in the left sub
+        if (root.val > val) {
+            root.left =  insertIntoBST(root.left, val);
+        }
         
-        // if (root.val == val)
         return root;
     }
 }
