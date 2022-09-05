@@ -20,15 +20,16 @@ class Solution {
     }
     
     public void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
+        if (root == null) return;
         
+        // swap right child and left child
         TreeNode temp = root.left;
         root.left = root.right;
         root.right = temp;
-        
+        // recurse
         traverse(root.left);
         traverse(root.right);
+        
+        
     }
 }
