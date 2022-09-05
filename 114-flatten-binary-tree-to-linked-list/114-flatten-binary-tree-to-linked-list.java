@@ -15,24 +15,25 @@
  */
 class Solution {
     public void flatten(TreeNode root) {
+        // need to flatten in place
         if (root == null) return;
         
+        // 1. flatten left and right sub-tree respectively
         flatten(root.left);
         flatten(root.right);
         
+        // 2. make left sub to right
         TreeNode left = root.left;
         TreeNode right = root.right;
         
-        // make the leftsub tree as the right subtree
         root.left = null;
         root.right = left;
         
-        // move to the end (point p at the end of the right subtree)
+        // 3. connect old right subtree to the end of new right subtree
         TreeNode p = root;
         while(p.right != null) {
             p = p.right;
         }
-        // connect the original right subtree to the end of the list
         p.right = right;
         
         
