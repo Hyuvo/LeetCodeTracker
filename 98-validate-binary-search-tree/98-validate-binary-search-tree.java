@@ -18,7 +18,7 @@ class Solution {
         return isValidBST(root, null, null);
     }
     
-    // validate root.val is within low and high bound
+    // validate root.val is within low and high bound(exclusively)
     public boolean isValidBST(TreeNode root, Integer low, Integer high) {
         if (root == null) return true;
         
