@@ -14,23 +14,24 @@
  * }
  */
 class Solution {
-    
-    
     public boolean isValidBST(TreeNode root) {
         return isValidBST(root, null, null);
     }
     
-    public boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
-        // reach the leaf node, no false returned yet
+    // validate root.val is within low and high bound
+    public boolean isValidBST(TreeNode root, Integer low, Integer high) {
         if (root == null) return true;
         
-        if (min != null && root.val <= min.val) {
+        if (low != null && root.val <= low) {
             return false;
         }
-        if (max != null && root.val >= max.val) {
-            return false;
-        }        
         
-        return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
-    }
+        if (high != null && root.val >= high) {
+            return false;
+        }
+        
+        // traverse the left and right sub-tree to validate
+        // the upper bound of left-sub is root.val, lower bound of right-sub is root.val
+        return isValidBST(root.left, low, root.val) && isValidBST(root.right, root.val, high);
+    } 
 }
