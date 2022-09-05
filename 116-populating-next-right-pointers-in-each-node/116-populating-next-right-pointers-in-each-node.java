@@ -24,6 +24,7 @@ class Node {
 class Solution {
     public Node connect(Node root) {
         if (root == null) return null;
+        // treat as a ternary tree
         traverse(root.left, root.right);
         return root;
     }
@@ -33,10 +34,13 @@ class Solution {
             return;
         }
         
+        // pre-order position, connect
         node1.next = node2;
         
+        // ternary tree traversal
         traverse(node1.left, node1.right);
         traverse(node2.left, node2.right);
+        // connect nodes belonging to diff sub root
         traverse(node1.right, node2.left);
     }
 }
