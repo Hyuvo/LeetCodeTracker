@@ -1,35 +1,36 @@
 class Solution {
-    List<List<Integer>> result = new LinkedList<>();
+    private List<List<Integer>> result = new LinkedList<>();
+    // to track the path from the root node
+    private LinkedList<Integer> path = new LinkedList<>();
+    private boolean[] used;
+    
     public List<List<Integer>> permute(int[] nums) {
-        // trace tracks the current path
-        LinkedList<Integer> trace = new LinkedList<>();
-        // used[i] == true means nums[i] is already on current path
-        boolean[] used = new boolean[nums.length];
-        
-        backtrack(nums, trace, used);
+        // use used to avoid duplicate num use
+        used = new boolean[nums.length];
+        backtrack(nums);
         return result;
     }
     
-    public void backtrack(int[] nums, LinkedList<Integer> trace, boolean[] used) {
-        // terminate condition
-        if (trace.size() == nums.length) {
-            // complete one possibility
-            // new to new a linkedlist object
-            result.add(new LinkedList<>(trace));
+    public void backtrack(int[] nums) {
+        // base case: reaches the leaf node
+        if (path.size() == nums.length) {
+            // get 1 possible permutation
+            result.add(new LinkedList(path));
+            return;
         }
         
-        // traverse children
         for (int i = 0; i < nums.length; ++i) {
+            // no duplicate value
             if (used[i]) {
                 continue;
             }
-            // make choice
-            trace.add(nums[i]);
+            // make a decision
+            path.add(nums[i]);
             used[i] = true;
-            // recurse
-            backtrack(nums, trace, used);
-            // cancel choice
-            trace.removeLast();
+            // traverse to next level
+            backtrack(nums);
+            // withdraw the decision
+            path.removeLast();
             used[i] = false;
         }
     }
