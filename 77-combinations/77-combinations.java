@@ -18,7 +18,7 @@ class Solution {
         for (int i = start; i <= n; ++i) {
             // make a decision
             path.add(i);
-            // traversal
+            // traverse with start to avoid duplicate branches
             backtrack(n, i + 1, k);
             // withdraw the decision
             path.removeLast();
