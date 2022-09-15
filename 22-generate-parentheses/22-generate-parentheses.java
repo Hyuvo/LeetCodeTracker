@@ -8,6 +8,7 @@ class Solution {
         return result;
     }
     
+    // # of left '('s to be put
     public void backtrack(int left, int right) {
         // building valid parentheses pairs from left
         // # of '(' >= # of ')' to be valid
