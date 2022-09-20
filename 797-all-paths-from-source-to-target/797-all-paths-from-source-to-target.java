@@ -1,34 +1,30 @@
-class Solution {    
+class Solution {
     private List<List<Integer>> result = new LinkedList<>();
     
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        // maintain current path
+        int n = graph.length;
         LinkedList<Integer> path = new LinkedList<>();
-        traverse(graph, 0, path);
+        traverse(graph, path, 0);
         return result;
     }
     
-    public void traverse(int[][] graph, int current, LinkedList<Integer> path) {
-        // traverse from current, record paths that go to n-1
-        
-        // add current node
-        path.add(current);
+    public void traverse(int[][] graph, LinkedList<Integer> path, int current) {
+        // traverse from current to n - 1
+        // track current path
+        path.addLast(current);
         int n = graph.length;
-        // if reaches the target, put the current path in the result
+        // if reaches the target
         if (current == n - 1) {
-            // why new list?
-            result.add(new LinkedList(path));
-            // exit the node
+            result.add(new LinkedList<>(path));
             path.removeLast();
             return;
         }
-        
-        // if not reaches the end, explore its neighbors
+        // traverse through neighbors
         for (int neighbor : graph[current]) {
-            traverse(graph, neighbor, path);
+            traverse(graph, path, neighbor);
         }
-        // exit current node;
-        path.removeLast();
         
-    }
+        // withdraw current from path
+        path.removeLast();
+    } 
 }
