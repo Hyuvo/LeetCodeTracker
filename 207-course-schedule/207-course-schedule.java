@@ -14,7 +14,7 @@ class Solution {
         for (int i = 0; i < numCourses; ++i) {
             // traversal
             // see if cycle exists while traverse
-            traverse(graph, i);
+            if (!visited[i]) traverse(graph, i);
         }    
         
         // if there's no cycle in the graph, it is possible to finish all courses
