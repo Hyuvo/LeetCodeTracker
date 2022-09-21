@@ -14,7 +14,7 @@ class Solution {
         // the graph may not be fully connected
         // traverse from each node
         for (int i = 0; i < numCourses; ++i) {
-            if (!visited[i]) traverse(graph, i);
+            traverse(graph, i);
         }
         
         // if no cycle exixts, can finish all courses
