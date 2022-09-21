@@ -5,6 +5,7 @@ class Solution {
     boolean[] color;
     
     public boolean possibleBipartition(int n, int[][] dislikes) {
+        // build graph from dislikes(edges)
         LinkedList<Integer>[] graph = buildGraph(dislikes, n);
         // node is 1-indexed
         visited = new boolean[n + 1];
