@@ -1,52 +1,50 @@
 class Solution {
     public int countComponents(int n, int[][] edges) {
         UnionFind uf = new UnionFind(n);
-        // build the uf graph per edges
         for (int[] edge : edges) {
             uf.union(edge[0], edge[1]);
         }
-        
-        return uf.count();
+        return uf.count;
     }
     
     class UnionFind {
-        // count connected unions
+        // # of unions
         private int count;
-        // track the parent of each node
+        // track parent of each node
         private int[] parent;
         
         // n is the # of nodes
         public UnionFind(int n) {
+            parent = new int[n];
+            // init a node with parent pointing to itself
+            for (int node = 0; node < n; ++node) {
+                parent[node] = node;
+            }
             this.count = n;
-            this.parent = new int[n];
-            for (int i = 0; i < n; ++i) {
-                parent[i] = i;
-            }        
         }
         
-        public void union(int p, int q) {
-            int rootP = find(p);
-            int rootQ = find(q);
+        // check if 2 nodes are in the same union
+        public boolean isConnected(int a, int b) {
+            int rootA = find(a), rootB = find(b);
             
-            if (rootP == rootQ) return;
-                       
-            // unite (connect one's root to the other's root)
-            parent[rootP] = rootQ;
-            this.count--;
-                      
+            return rootA == rootB;
         }
         
-        public boolean connected(int p, int q) {
-            int rootP = find(p);
-            int rootQ = find(q);
-            
-            return rootP == rootQ;
+        // union 2 nodes
+        public void union(int a, int b) {
+            int rootA = find(a), rootB = find(b);
+            if (rootA == rootB) return;
+            // connect b's root to a's root
+            // CAUTION
+            parent[rootB] = rootA;
+            // 1 less union
+            --count;
         }
         
-        // find root and compress path
+        // find the root of the node x
         public int find(int x) {
             if (parent[x] != x) {
-                // recurse until find the root, and set all nodes on the path parent to the root
+                // recursively find and connect all nodes to 1 root
                 parent[x] = find(parent[x]);
             }
             return parent[x];
