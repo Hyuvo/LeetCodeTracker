@@ -1,28 +1,25 @@
 class Solution {
+    // union find
     public boolean equationsPossible(String[] equations) {
-        // first union all equal variables
+        // vars are lowercase letters
         UnionFind uf = new UnionFind(26);
+        // first connect all "=="
         for (String equation : equations) {
             if (equation.charAt(1) == '=') {
-                char x = equation.charAt(0);
-                char y = equation.charAt(3);
+                char x = equation.charAt(0), y = equation.charAt(3);
                 uf.union(x - 'a', y - 'a');
             }
         }
-        // then see if unequal variables are connected on the uf
+        // then go thru all "!=" to check if they are connected
         for (String equation : equations) {
             if (equation.charAt(1) == '!') {
-                char x = equation.charAt(0);
-                char y = equation.charAt(3);
-                // if connected, loical confilit exists
+                char x = equation.charAt(0), y = equation.charAt(3);
                 if (uf.isConnected(x - 'a', y - 'a')) {
                     return false;
                 }
             }
         }
-        
         return true;
-              
     }
     
     class UnionFind {
@@ -30,39 +27,42 @@ class Solution {
         private int[] parent;
         
         public UnionFind(int n) {
-            count = n;
+            this.count = n;
             parent = new int[n];
-            // point to itself at init
-            for (int i = 0; i < n; ++i) {
-                parent[i] = i;
+            // init each node's parent to itself
+            for (int node = 0; node < n; ++node) {
+                parent[node] = node;
             }
         }
-        
-        public void union(int u, int v) {
-            int uRoot = findRoot(u), vRoot = findRoot(v);
-            if (uRoot == vRoot) {
-                return;
-            } 
-            
-            parent[uRoot] = vRoot;
-            count--;                            
-        }
-        
-        public boolean isConnected(int u, int v) {
-            int uRoot = findRoot(u), vRoot = findRoot(v);
-            
-            return uRoot == vRoot;
-        }
-        
-        public int findRoot(int x) {
+               
+        // find the root of node x and return
+        public int find(int x) {
+            // if x is not root
+            // recursively find and connect node alongside to the 1 very root
             if (parent[x] != x) {
-                parent[x] = findRoot(parent[x]);
+                parent[x] = find(parent[x]);
             }
             return parent[x];
         }
         
+        // see if 2 nodes are in the same union
+        public boolean isConnected(int a, int b) {
+            int rootA = find(a), rootB = find(b);
+            return rootA == rootB;
+        }
+        
+        // union 2 nodes
+        public void union(int a, int b) {
+            int rootA = find(a), rootB = find(b);
+            // if already united
+            if (rootA == rootB) return;
+            
+            // point a's root to b's root
+            parent[rootA] = rootB;
+        }
+        
         public int count() {
-            return count;
+            return this.count;
         }
     }
 }
