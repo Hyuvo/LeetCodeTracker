@@ -1,68 +1,63 @@
 class Solution {
     public boolean canPartitionKSubsets(int[] nums, int k) {
-        // boolean[] used = new boolean[nums.length];
+        if (k > nums.length) return false;
         int sum = 0;
         for (int num : nums) {
             sum += num;
         }
         if (sum % k != 0) return false;
         int target = sum / k;
-        // using bitmasking
         int used = 0;
-        return backtrack(k, 0, nums, 0, used, target);
+        
+        return backtrack(k, 0, nums, 0, target, used);            
     }
-    // use memo to track each tested num combination/arrangement
-    HashMap<Integer, Boolean> memo = new HashMap<>();
     
-    public boolean backtrack(int k, int bucket, int[] nums, int start, int used, int target) {
+    HashMap<Integer, Boolean> memo = new HashMap();
+    // put from bucket's pov, k buckets to be filled
+    public boolean backtrack(int k, int bucket, int[] nums, int start, int target, int used) {
         if (k == 0) {
-            // all bucket are assigned nums
-            // all nums must be assigned, as target = sum / k
+            // filled all buckets
             return true;
         }
         
+        // if complete the current bucket
         if (bucket == target) {
-            // the current bucket is completed
-            // fill next bucket
-            boolean result = backtrack(k - 1, 0, nums, 0, used, target);
-            // store the result
+            // move to the next bucket
+            boolean result = backtrack(k - 1, 0, nums, 0, target, used);
             memo.put(used, result);
+            return result;
         }
         
-        // look up the memo to avoid duplicate computation
+        // if memoed this bucket filling plan
         if (memo.containsKey(used)) {
             return memo.get(used);
         }
         
-        // fill with nums index from start
         for (int i = start; i < nums.length; ++i) {
-            // cut branches
+            // if the num is used[i]
+            // already in other bucket
             if (((used >> i) & 1) == 1) {
-                // if the ith num is used
                 continue;
             }
-            // if exceed current bucket
+            // current num cannot fit
             if (bucket + nums[i] > target) {
-                // got to next num
                 continue;
             }
             
-            // make a decision, put nums[i] into the bucket
-            // used[i] = true;
+            // set current num used
             used |= 1 << i;
+            // put current num in the bucket
             bucket += nums[i];
-            // see if next num can be put into current bucket
-            if (backtrack(k, bucket, nums, i + 1, used, target)) {
+            if (backtrack(k, bucket, nums, i + 1, target, used)) {
                 return true;
             }
-            
-            // withdraw the decision
-            // used[i] = false;
+            // withdraw
             used ^= 1 << i;
             bucket -= nums[i];
-            
             
         }
         return false;
     }
+    
+    
 }
