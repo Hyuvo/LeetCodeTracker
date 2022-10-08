@@ -1,60 +1,65 @@
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        // bottom up with dp table
-        
-        // base case
-        // if (amount == 0) return 0;
-        // if (amount < 0) return -1;
-        
-        int[] dp = new int[amount + 1];
-        // the worst case is amount made up of all 1 coins
-        // so amount + 1 is the +infinity here
-        Arrays.fill(dp, amount + 1);
-        dp[0] = 0;
-        for (int i = 0; i < dp.length; ++i) {
-            for (int coin : coins) {
-                if (i - coin < 0) {
-                    continue;
-                }
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-            }
-        }
-        return (dp[amount] == amount + 1) ? -1 : dp[amount];
-    }
-}
-
 // class Solution {
-//     // optimize with memo
-//     private int[] memo;
-    
 //     public int coinChange(int[] coins, int amount) {
-//         memo = new int[amount + 1];
-//         Arrays.fill(memo, -111);
-//         return dynamic(coins, amount);
-//     }
-    
-//     private int dynamic(int[] coins, int amount) {
-//         if (amount == 0) return 0;
-//         if (amount < 0) return -1;
-//         // if knows the result, no need to recalculate
-//         if (memo[amount] != -111) {
-//             return memo[amount];
-//         }
+//         // bottom up with dp table
         
-//         int result = Integer.MAX_VALUE;
-//         for (int coin : coins) {
-//             // subproblem is the # of coins
-//             int subProblem = dynamic(coins, amount - coin);
-//             if (subProblem == -1) {
-//                 continue;
+//         // base case
+//         // if (amount == 0) return 0;
+//         // if (amount < 0) return -1;
+        
+//         int[] dp = new int[amount + 1];
+//         // the worst case is amount made up of all 1 coins
+//         // so amount + 1 is the +infinity here
+//         Arrays.fill(dp, amount + 1);
+//         dp[0] = 0;
+//         for (int i = 0; i < dp.length; ++i) {
+//             for (int coin : coins) {
+//                 if (i - coin < 0) {
+//                     continue;
+//                 }
+//                 dp[i] = Math.min(dp[i], dp[i - coin] + 1);
 //             }
-//             result = Math.min(result, subProblem + 1);
 //         }
-//         // also store -1 when there's no solution
-//         memo[amount] = (result == Integer.MAX_VALUE) ? -1 : result;
-//         return memo[amount];
+//         return (dp[amount] == amount + 1) ? -1 : dp[amount];
 //     }
 // }
+
+class Solution {
+    // optimize with memo
+    int[] memo;
+    
+    public int coinChange(int[] coins, int amount) {
+        memo = new int[amount + 1];
+        // init memo with impossible value
+        Arrays.fill(memo, -13);
+        
+        return dp(coins, amount);
+    }
+    
+    public int dp(int[] coins, int amount) {
+        // base case
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+        
+        // if in memo
+        if (memo[amount] != -13) return memo[amount];
+        
+        // # of coins
+        int num = Integer.MAX_VALUE;
+        // try each coin combination
+        for (int coin : coins) {
+            int subNum = dp(coins, amount - coin);
+            // if no solution to sub problem, skip
+            if (subNum == -1) continue;
+            // maintain min num
+            num = Math.min(subNum + 1, num);
+        }
+        // record the best sol
+        memo[amount] = (num == Integer.MAX_VALUE) ? -1 : num;
+        return memo[amount];
+    }
+    
+    
+}
 
 // class Solution {
 //     // brute force top-down
