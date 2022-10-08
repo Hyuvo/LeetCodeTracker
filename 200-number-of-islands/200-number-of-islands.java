@@ -1,38 +1,36 @@
 class Solution {
-    // count # of islands
+    // flood fill
     public int numIslands(char[][] grid) {
-        int count = 0;
         int m = grid.length, n = grid[0].length;
+        int num = 0;
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (grid[i][j] == '1') {
-                    // once find an island, count
-                    count++;
-                    // and flood its ajacent land
+                    // count # of islands
+                    ++num;
+                    // flood the land
                     dfs(grid, i, j);
                 }
             }
         }
-        return count;
+        return num;
     }
-    
-    int[][] directions = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int[][] directions = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     public void dfs(char[][] grid, int i, int j) {
         int m = grid.length, n = grid[0].length;
-        // termination
-        // outta boundary
+        // outta bound
         if (i < 0 || i >= m || j < 0 || j >= n) {
             return;
         }
-        // water or already flooded
+        // skip waters
         if (grid[i][j] == '0') {
             return;
         }
-        // flood this grid
+        // flood current land
         grid[i][j] = '0';
-        // flood its ajacent land
+        // flood adjacent lands
         for (int[] dir : directions) {
             dfs(grid, i + dir[0], j + dir[1]);
-        }        
+        }
     }
 }
