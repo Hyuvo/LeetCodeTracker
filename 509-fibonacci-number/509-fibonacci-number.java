@@ -1,13 +1,11 @@
 class Solution {
     public int fib(int n) {
-        // optimize on space
+        // base case
         if (n == 0 || n == 1) return n;
-        // dp[i - 1] and dp[i - 2]
-        int dp_i_1 = 1;
-        int dp_i_2 = 0;
-        // no need to store each value;
+        int dp_i_1 = 1, dp_i_2 = 0;
         for (int i = 2; i <= n; ++i) {
             int dp_i = dp_i_1 + dp_i_2;
+            // update on a rolling basis
             dp_i_2 = dp_i_1;
             dp_i_1 = dp_i;
         }
