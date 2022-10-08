@@ -1,77 +1,72 @@
 class Solution {
+    // return the minimum total number of turns required to open the lock, or -1 if it is impossible.
+    // BFS
     public int openLock(String[] deadends, String target) {
-        // Use a set to store dead ends
-        HashSet<String> deads = new HashSet<>();
-        // use visited to track visited combinations
-        HashSet<String> visited = new HashSet<>();
-        
-        for (String deadend : deadends) {
-            deads.add(deadend);
+        // use set to track deadends and visited combination
+        Set<String> deads = new HashSet();
+        for (String dead : deadends) {
+            deads.add(dead);
         }
+        Set<String> visited = new HashSet();
         
-        Queue<String> q = new LinkedList<String>();
+        // start from '0000'
+        Queue<String> q = new LinkedList();
         q.offer("0000");
         visited.add("0000");
+        // track the # of turns
+        int num = 0;
         
-        int attempt = 0;
-        
-        while (!q.isEmpty()) {
+        while(!q.isEmpty()) {
             int size = q.size();
-            // expand current queue
+            // traverse current level
             for (int i = 0; i < size; ++i) {
                 String current = q.poll();
+                // skil deadends
+                if (deads.contains(current)) continue;
                 
-                // skip the deadends
-                if (deads.contains(current)) {
-                    continue;
-                }
-                // see if it's the target
                 if (current.equals(target)) {
-                    return attempt;
+                    return num;
                 }
-                
-                // add its neighbors to the queue
-                for (int j = 0; j < 4; ++j) {
-                    String plus = plusOne(current, j);
-                    if (!visited.contains(plus)) {
-                        q.add(plus);
-                        visited.add(plus);
+                // add current node's children to the q
+                // each wheel can be turn up and down
+                // for each wheel
+                for(int j = 0; j < 4; ++j) {
+                    String up = plusOne(current, j);
+                    if (!visited.contains(up)) {
+                        q.offer(up);
+                        visited.add(up);
                     }
-                    
-                    String minus = minusOne(current, j);
-                    if (!visited.contains(minus)) {
-                        q.add(minus);
-                        visited.add(minus);
-                    }
+                    String down = minusOne(current, j);
+                    if (!visited.contains(down)) {
+                        q.offer(down);
+                        visited.add(down);
+                    }                    
                 }
-                
             }
-             attempt++;        
+            num++;
         }
-        
-        // if target is not reached
+        // if tried every combination, but still not reach target
         return -1;
     }
     
-    public String plusOne(String current, int i) {
-        char[] code = current.toCharArray();
+    public String plusOne(String s, int i) {
+        char[] code = s.toCharArray();
         if (code[i] == '9') {
-            code[i] = '0';
+            code[i] = '0';           
         } else {
             code[i] += 1;
+            // code[i]++ works?
         }
-        
         return new String(code);
     }
     
-    public String minusOne(String current, int i) {
-        char[] code = current.toCharArray();
+    public String minusOne(String s, int i) {
+        char[] code = s.toCharArray();
         if (code[i] == '0') {
             code[i] = '9';
         } else {
             code[i] -= 1;
         }
-        
         return new String(code);
     }
 }
