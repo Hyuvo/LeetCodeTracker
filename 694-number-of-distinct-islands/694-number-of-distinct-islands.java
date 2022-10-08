@@ -1,45 +1,44 @@
 class Solution {
+    // identical islands are traversed by dfs with the same order
+    // serialize the trace of dfs and store it in the set to get distinct trace
+    HashSet<String> islands = new HashSet();
     public int numDistinctIslands(int[][] grid) {
-        // serialize grid, then store in a set and return count
-        // for identical island, dfs traverse their grids in the same order
-        // represent up, down, left, right with 1, 2, 3, 4, and reverse with minus
-        HashSet<String> islands = new HashSet<>();
         int m = grid.length, n = grid[0].length;
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (grid[i][j] == 1) {
+                    // start with a unique dir
                     StringBuilder sb = new StringBuilder();
-                    // flood this island
-                    dfs(grid, i, j, sb, 33);
-                    // serialize the trace to track distinct islands
+                    dfs(grid, i, j, sb, 13);
+                    // don't forget to add the traversal result!!!!
                     islands.add(sb.toString());
                 }
             }
         }
-        return islands.size();        
+        return islands.size();
     }
     
+    // represent moving up, down, left, right with 1, 2, 3, 4, and reversely with -dir
     public void dfs(int[][] grid, int i, int j, StringBuilder sb, int dir) {
-        // add string to track trace and dir to track last move direction
         int m = grid.length, n = grid[0].length;
-        // termination
-        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == 0) {
+        // check boundary
+        if (i < 0 || i >= m || j < 0 || j >= n) {
             return;
         }
+        if (grid[i][j] == 0) return;
         
-        // pre-order position: flood the grid and its adjacent land
+        // pre-order position: flood current grid
         // enter (i, j)
         grid[i][j] = 0;
         sb.append(dir).append(',');
         
-        // traverse up, down, left, right
-        dfs(grid, i - 1, j, sb, 1);
-        dfs(grid, i + 1, j, sb, 2);
-        dfs(grid, i, j - 1, sb, 3);
-        dfs(grid, i, j + 1, sb, 4);   
+        // traverse its adjacent lands and track the trace
+        dfs(grid, i, j - 1, sb, 1);
+        dfs(grid, i, j + 1, sb, 2);
+        dfs(grid, i - 1, j, sb, 3);
+        dfs(grid, i + 1, j, sb, 4);
         
         // post-order position: exit (i, j)
         sb.append(-dir).append(',');
-            
     }
 }
