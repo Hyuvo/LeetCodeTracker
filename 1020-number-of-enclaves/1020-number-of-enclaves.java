@@ -1,47 +1,53 @@
 class Solution {
+    // # of land cells
+    // do not count boundaries
+    // calculate the area of enclosed 1s
     public int numEnclaves(int[][] grid) {
-        // calculate the area of enclosed 1s
         int m = grid.length, n = grid[0].length;
-
-        // first flood islands that are on the border        
+        
+        // flood 4 borders
         for (int i = 0; i < m; ++i) {
+            // flood 1st col and last col
             dfs(grid, i, 0);
             dfs(grid, i, n - 1);
         }
-        for (int i = 0; i < n; ++i) {
-            dfs(grid, 0, i);
-            dfs(grid, m - 1, i);
+        for (int j = 0; j < n; ++j) {
+            // flood 1st row and last row
+            dfs(grid, 0, j);
+            dfs(grid, m - 1, j);
         }
         
-        // count the lefted island(not flood/ not do visited) 
-        int count = 0;
+        // count lefted land cells
+        int num = 0;
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (grid[i][j] == 1) {
-                    // simply count the area
-                    count++;
+                    ++num;
                 }
             }
         }
-        return count;
+        return num;
     }
-    int[][] directions = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    
+    int[][] directions = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    
     public void dfs(int[][] grid, int i, int j) {
-        // termination
         int m = grid.length, n = grid[0].length;
-        // off the grid
+        // validate (i, j)
         if (i < 0 || i >= m || j < 0 || j >= n) {
             return;
         }
-        // reach the water
+        // if is water, skip
         if (grid[i][j] == 0) {
             return;
         }
-        // flood the island and its adjacent land
+        
+        // flood current land
         grid[i][j] = 0;
+        // go to its adjacent lands
         for (int[] dir : directions) {
             dfs(grid, i + dir[0], j + dir[1]);
         }
-        
     }
+        
 }
