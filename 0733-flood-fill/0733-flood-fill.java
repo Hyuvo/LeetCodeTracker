@@ -1,7 +1,6 @@
 class Solution {    
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        // base case
-        if (image[sr][sc] == color) return image;
+        
         dfs(image, sr, sc, image[sr][sc], color);
         return image;
         
@@ -13,6 +12,8 @@ class Solution {
         if (i < 0 || i >= m || j < 0 || j >= n) return;
         // color not match
         if (image[i][j] != old) return;
+        // if already has new color
+        if (image[i][j] == color) return;
         // replace with new color
         image[i][j] = color;
         // traverse to neighbors
