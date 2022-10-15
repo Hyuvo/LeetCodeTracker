@@ -2,6 +2,7 @@ class Solution {
     public int maxSubArray(int[] nums) {
         int n = nums.length;
         int dp_0 = nums[0];
+        // base case, if n == 1
         int result = dp_0;
         for (int i = 1; i < n; ++i) {
             // dp_i is the largest sub-sum before nums[i] (inclusive)
