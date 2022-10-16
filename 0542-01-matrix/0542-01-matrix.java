@@ -4,7 +4,7 @@ class Solution {
         int m = mat.length, n = mat[0].length;
         Queue<int[]> q = new ArrayDeque();
         boolean[][] visited = new boolean[m][n];
-        // add 0 to q and visited
+        // add all 0s to q and visited
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (mat[i][j] == 0) {
@@ -24,7 +24,7 @@ class Solution {
                 for (int[] dir : directions) {
                     int x = current[0] + dir[0];
                     int y = current[1] + dir[1];
-                    // not visited yet (must not 0)
+                    // not visited yet and non-0
                     if (x >= 0 && x < m && y >= 0 && y < n && !visited[x][y]) {
                         visited[x][y] = true;
                         mat[x][y] = step;
