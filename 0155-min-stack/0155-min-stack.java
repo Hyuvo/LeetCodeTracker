@@ -21,25 +21,17 @@ class MinStack {
     }
     
     public void pop() {
-        if (!stack.isEmpty()) {
-            stack.pop();
-            minStack.pop();
-        }
+        stack.pop();
+        minStack.pop();
     }
     
     public int top() {
         // null check?
-        if (!stack.isEmpty()) {
-            return stack.peek();
-        }
-        return 0;
+        return stack.peek();
     }
     
     public int getMin() {
-        if (!minStack.isEmpty()) {
-            return minStack.peek();
-        }
-        return 0;
+        return minStack.peek();
     }
 }
 
