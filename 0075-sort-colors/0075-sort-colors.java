@@ -13,6 +13,7 @@ class Solution {
             } else if (nums[curr] == 2) {
                 // encounter 2
                 // swap curr with p2
+                // NOTE: curr do not move forward
                 swap(nums, curr, p2--);
             } else curr++;
         }
