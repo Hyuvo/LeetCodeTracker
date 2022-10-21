@@ -13,16 +13,19 @@ class MinStack {
         // if val is smaller
         if (minStack.isEmpty() || val <= minStack.peek()) {
             minStack.push(val);
-        } else {
-            // maintain the 2 stacks in the same size
-            // so they can pop together
-            minStack.push(minStack.peek());
         }
+        // } else {
+        //     // maintain the 2 stacks in the same size
+        //     // so they can pop together
+        //     minStack.push(minStack.peek());
+        // }
     }
     
     public void pop() {
-        stack.pop();
-        minStack.pop();
+        // Note: use equals()
+        if (stack.pop().equals(minStack.peek())) {
+            minStack.pop();
+        }
     }
     
     public int top() {
