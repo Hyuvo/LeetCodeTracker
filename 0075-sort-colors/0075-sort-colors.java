@@ -9,12 +9,14 @@ class Solution {
             if (nums[curr] == 0) {
                 // encounter1
                 // swap curr with p1
-                swap(nums, curr++, p1++);                
+                swap(nums, curr++, p1++); 
+                // 因为遇到0交换之后到前面的一定是1，所以cur++
             } else if (nums[curr] == 2) {
                 // encounter 2
                 // swap curr with p2
                 // NOTE: curr do not move forward
                 swap(nums, curr, p2--);
+                // 但是遇到2交换过来的不知道是啥，所以cur不能动，还要再看
             } else curr++;
         }
     }
