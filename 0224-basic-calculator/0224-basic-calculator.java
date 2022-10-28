@@ -1,6 +1,5 @@
 class Solution {
     public int calculate(String s) {
-        // s = "(2 - 5)";
         Deque<Character> deque = new ArrayDeque();
         for (int i = 0; i < s.length(); ++i) {
             char c = s.charAt(i);
@@ -8,52 +7,53 @@ class Solution {
                 deque.offer(c);
             }
         }
+        
         return calculate(deque);
     }
     
     private int calculate(Deque<Character> deque) {
         Deque<Integer> stack = new ArrayDeque();
-        // init first sign and temp result
+        
+        // init sign and num for the 1st num
         char sign = '+';
         int num = 0;
-        // process the string till the end
+        
         while (deque.size() > 0) {
-            char c = deque.poll();
-            if (Character.isDigit(c)) {
-                // add up
-                num = num * 10 + (c - '0');                
+            char curr = deque.poll();
+            // sum up digits
+            if (Character.isDigit(curr)) {
+                num = 10 * num + (curr - '0');
             }
-            if (c == '(') {
-                // recursively calculate the lefted part as a whole
+            if (curr == '(') {
+                // regard () as an entire num
                 num = calculate(deque);
             }
-            // encouter a sign or reach the end of the expression
-            if (!Character.isDigit(c) || deque.size() == 0) {
+            // if encounter the operator or reach the end
+            // operate the num and update sign to the operator
+            if (!Character.isDigit(curr) || deque.size() == 0) {
                 switch(sign) {
                     case '+':
-                        stack.push(num);
-                        break;
+                        stack.push(num); break;
                     case '-':
-                        stack.push(-num);
-                        break;
+                        stack.push(-num); break;
                     case '*':
-                        stack.push(stack.pop() * num);
-                        break;
+                        stack.push(stack.pop() * num); break;
                     case '/':
-                        stack.push(stack.pop() / num);
-                        break;
+                        stack.push(stack.pop() / num); break;
                 }
-                // reset sign and temp result for next digit
-                sign = c;
+                // update the sign and reset num
+                sign = curr;
                 num = 0;
             }
-            if (c == ')') break;
-                      
+            if (curr == ')') break;
         }
-        int sum = 0;
+        int result = 0;
+        // sum up all digits in the stack
         for (int digit : stack) {
-            sum += digit;
+            result += digit;
         }
-        return sum;
+        return result;
     }
+    
+    
 }
