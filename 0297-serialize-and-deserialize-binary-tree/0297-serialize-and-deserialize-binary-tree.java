@@ -8,9 +8,8 @@
  * }
  */
 public class Codec {
-    private static final String NULL = "#";
     private static final String SEP = ",";
-
+    private static final String NULL = "#";
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         StringBuilder sb = new StringBuilder();
@@ -18,38 +17,39 @@ public class Codec {
         return sb.toString();
     }
     
+    // serialize by pre-order traversal
     public void serialize(TreeNode root, StringBuilder sb) {
         if (root == null) {
             sb.append(NULL).append(SEP);
             return;
         }
-        // pre-order traversal
-        sb.append(root.val).append(SEP);
+        
+        // pre-order
+        sb.append(root.val).append(SEP);        
         serialize(root.left, sb);
         serialize(root.right, sb);
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        // transfer data to node list
         LinkedList<String> nodes = new LinkedList();
         for (String s : data.split(SEP)) {
-            nodes.add(s);
+            nodes.addLast(s);
         }
         return deserialize(nodes);
     }
     
+    // decode per pre-order
     public TreeNode deserialize(LinkedList<String> nodes) {
         if (nodes.isEmpty()) return null;
-        // val of root node
+        // the first node is the root val
         String first = nodes.removeFirst();
-        
-        // preorder
         if (first.equals(NULL)) return null;
+        // pre-order
         TreeNode root = new TreeNode(Integer.parseInt(first));
-        
         root.left = deserialize(nodes);
         root.right = deserialize(nodes);
+        
         return root;
     }
 }
