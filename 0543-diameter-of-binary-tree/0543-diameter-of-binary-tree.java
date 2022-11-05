@@ -21,6 +21,7 @@ class Solution {
     }
     
     // return the depth of a tree
+    // depth is the edge # to root, so the diameter is the sum of depths of the subtrees
     public int maxDepth(TreeNode root) {
         // base case;
         if (root == null) return 0;
