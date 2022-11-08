@@ -19,6 +19,7 @@ class Node {
 */
 
 class Solution {
+    // original node => cloned node
     private HashMap<Node, Node> oriToClone = new HashMap();
     public Node cloneGraph(Node node) {
         if (node == null) return null;
