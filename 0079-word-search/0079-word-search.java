@@ -5,6 +5,7 @@ class Solution {
         used = new boolean[m][n];
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
+                // start search from any board[i][j] == word[0]
                 if (board[i][j] == word.charAt(0)) {
                     boolean flag = dfs(board, word, i, j, 0);
                     if (flag) return true;
@@ -16,15 +17,18 @@ class Solution {
     int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     public boolean dfs(char[][] board, String word, int i, int j, int k) {
         int m = board.length, n = board[0].length;
+        // outta bound
         if (i < 0 || i >= m || j < 0 || j >= n) {
             return false;
         }
+        // visited
         if (used[i][j]) return false;
+        // not the target char
         if (board[i][j] != word.charAt(k)) return false;
-        
+        // reach the end of the word
         if (board[i][j] == word.charAt(k) && k == word.length() - 1) 
-            return true;
-        // if find next char
+            return true;       
+        // traverse
         used[i][j] = true;
         boolean result = false;
         for (int[] dir : dirs) {
