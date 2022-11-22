@@ -1,67 +1,75 @@
 class Solution {
-    // shortest transformation-- bfs
-    // build graph: 马冬梅 => *冬梅，马*梅，马东*
+    // bfs
+    // use vague layers to connect words
+    // use bidirect bfs to optimize
+    
+    // label words with id
     HashMap<String, Integer> wordToId = new HashMap();
+    // graph without knowing size
     ArrayList<ArrayList<Integer>> graph = new ArrayList();
-    // label word from 0
+    // also the # of nodes
     int wordId = 0;
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // no such an endWord
         if (!wordList.contains(endWord)) return 0;
         // build graph
         for (String word : wordList) {
             addEdge(word);
         }
         addEdge(beginWord);
-        // if (!wordToId.containsKey(endWord)) return 0;
-        // distance[i] is the status change # from beginWord to i
-        // word => vague word => word
-        // wordId is the # of nodes
-        int[] distance = new int[wordId];
-        Arrays.fill(distance, Integer.MAX_VALUE);
+        // wordId is also the # of nodes(including vague nodes)
+        // steps[i] is the # of steps from beginWord to i
+        int[] steps = new int[wordId];
+        // total steps < wordId(# of nodes)
+        Arrays.fill(steps, wordId);       
         int beginId = wordToId.get(beginWord), endId = wordToId.get(endWord);
-        distance[beginId] = 0;
-        // BFS
+        steps[beginId] = 0;
+        // bfs
         ArrayDeque<Integer> q = new ArrayDeque();
         q.offer(beginId);
-        
         while (!q.isEmpty()) {
             int curr = q.poll();
-            // return # of nodes of the trans seq, so +1
-            if (curr == endId) return distance[endId] / 2 + 1;
-            ArrayList<Integer> neighbors = graph.get(curr);
-            for (int neighbor : neighbors) {
+            // reach target
+            // # of words = steps + 1
+            // devided by 2 because of vague layers
+            if (curr == endId) return steps[endId] / 2 + 1;
+            for (int next : graph.get(curr)) {
                 // if not visited
-                if (distance[neighbor] == Integer.MAX_VALUE) {
-                    q.offer(neighbor);
-                    distance[neighbor] = distance[curr] + 1;
+                if (steps[next] == wordId) {
+                    steps[next] = steps[curr] + 1;
+                    q.offer(next);
                 }
             }
         }
         return 0;
     }
     
-    public void addEdge(String word) {
+    // connect nodes through vague words in the middle
+    private void addEdge(String word) {
         addWord(word);
+        // create vague words and connect
         char[] array = word.toCharArray();
         int id1 = wordToId.get(word);
-        // build dummy nodes, and connect edge
-        for (int i = 0; i < word.length(); ++i) {
+        for (int i = 0; i < array.length; ++i) {
             char temp = array[i];
+            // create vague nodes
             array[i] = '*';
-            String newWord = new String(array);
+            String newWord = new String(array);           
             addWord(newWord);
             int id2 = wordToId.get(newWord);
+            // connect
             graph.get(id1).add(id2);
             graph.get(id2).add(id1);
             array[i] = temp;
         }
-        
     }
     
-    public void addWord(String word) {
+    private void addWord(String word) {
         if (!wordToId.containsKey(word)) {
             wordToId.put(word, wordId++);
-            graph.add(new ArrayList<Integer>());
-        }        
+            // increase graph size accordingly
+            graph.add(new ArrayList<>());
+        }
     }
+    
 }
